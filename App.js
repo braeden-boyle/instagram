@@ -11,8 +11,8 @@ import { thunk } from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
 const store = configureStore({
   reducer: rootReducer,
-  middleware: thunk
-})
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
+});
 
 if(getApps().length < 1){
   initializeApp(firebaseConfig)

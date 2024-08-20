@@ -15,6 +15,8 @@ export function fetchUser() {
                 });
             } else {
                 console.log('No such document');
+                console.log('User ID: ' + auth.currentUser.uid)
+                console.log('User email: ' + auth.currentUser.email)
             }
         } catch (error) {
             console.error('Error fetching user: ', error);
