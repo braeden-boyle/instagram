@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { View, Text } from 'react-native'
 
 export class Main extends Component {
     componentDidMount() {
@@ -6,9 +7,9 @@ export class Main extends Component {
     }
     render() {
         return (
-            <div>
-        
-            </div>
+            <View style={{ flex: 1, justifyContent: 'center'}}>
+                <Text style={{textAlign: "center"}}>User is logged in</Text>
+            </View>
         )
     }
 }

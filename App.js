@@ -23,6 +23,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import LandingScreen from './components/auth/Landing';
 import RegisterScreen from './components/auth/Register';
+import MainScreen from './components/Main';
 
 const Stack = createStackNavigator();
 
@@ -72,9 +73,9 @@ export class App extends Component {
     }
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center'}}>
-        <Text style={{textAlign: "center"}}>User is logged in</Text>
-      </View>
+      <Provider store={store}>
+        <MainScreen/>
+      </Provider>
     )
   }
 }
