@@ -5,6 +5,15 @@ import { View, Text } from 'react-native'
 import { getApps, initializeApp } from 'firebase/app';
 import { auth, firebaseApp, firebaseConfig } from './firebaseConfig';
 
+import { Provider } from 'react-redux';
+import rootReducer from './redux/reducers'
+import { thunk } from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: thunk
+})
+
 if(getApps().length < 1){
   initializeApp(firebaseConfig)
 }

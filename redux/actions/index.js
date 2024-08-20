@@ -1,5 +1,6 @@
 import { getDoc, doc } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig";
+import { USER_STATE_CHANGE } from "../constants";
 
 export function fetchUser() {
     return async (dispatch) => {
