@@ -1,6 +1,7 @@
 import { Camera, CameraType } from 'expo-camera/legacy';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
   const [type, setType] = useState(CameraType.back);
@@ -22,6 +23,22 @@ export default function App() {
       </View>
     );
   }
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   function toggleCameraType() {
     setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
@@ -45,6 +62,7 @@ export default function App() {
       </View>
       <Button style={styles.button} onPress={toggleCameraType} title='Flip Camera'/>
       <Button title='Take Picture' onPress={() => takePicture()}/>
+      <Button title="Pick Image From Camera Roll" onPress={pickImage} />
       {image &&  <Image source={{uri: image}} style={{flex: 1}}/>} 
     </View>
   );
