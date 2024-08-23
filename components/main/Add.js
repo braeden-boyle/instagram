@@ -4,6 +4,7 @@ import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
   const [type, setType] = useState(CameraType.back);
+  const [camera, setCamera] = useState(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
   if (!permission) {
@@ -25,15 +26,24 @@ export default function App() {
     setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
+  const takePicture = async () => {
+    if (camera){
+      const data = await camera.takePictureAsync(null);
+      console.log(data.uri)
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <Camera style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </Camera>
+    <View style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Camera
+          ref={ref => setCamera(ref)} 
+          style={styles.camera} 
+          type={type}
+        />
+      </View>
+      <Button style={styles.button} onPress={toggleCameraType} title='Flip Camera'/>
+      <Button title='Take Picture' onPress={() => takePicture()}/>
     </View>
   );
 }
@@ -41,10 +51,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'row',
   },
   camera: {
-    flex: 1,
+    flex: 1
   },
   buttonContainer: {
     flex: 1,
