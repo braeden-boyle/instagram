@@ -1,10 +1,11 @@
 import { Camera, CameraType } from 'expo-camera/legacy';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
 export default function App() {
   const [type, setType] = useState(CameraType.back);
   const [camera, setCamera] = useState(null);
+  const [image, setImage] = useState(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
   if (!permission) {
@@ -29,7 +30,7 @@ export default function App() {
   const takePicture = async () => {
     if (camera){
       const data = await camera.takePictureAsync(null);
-      console.log(data.uri)
+      setImage(data.uri)
     }
   }
 
@@ -44,6 +45,7 @@ export default function App() {
       </View>
       <Button style={styles.button} onPress={toggleCameraType} title='Flip Camera'/>
       <Button title='Take Picture' onPress={() => takePicture()}/>
+      {image &&  <Image source={{uri: image}} style={{flex: 1}}/>} 
     </View>
   );
 }
