@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function App() {
+export default function Add({ navigation }) {
   const [type, setType] = useState(CameraType.back);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
@@ -63,6 +63,7 @@ export default function App() {
       <Button style={styles.button} onPress={toggleCameraType} title='Flip Camera'/>
       <Button title='Take Picture' onPress={() => takePicture()}/>
       <Button title="Pick Image From Camera Roll" onPress={pickImage} />
+      <Button title='Save' onPress={() => navigation.navigate('Save', {image})}/>
       {image &&  <Image source={{uri: image}} style={{flex: 1}}/>} 
     </View>
   );
