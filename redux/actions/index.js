@@ -27,7 +27,7 @@ export function fetchUser() {
 export function fetchUserPosts() {
     return async (dispatch) => {
         try {
-            const q = query(collection(db, `posts/${auth.currentUser.uid}/userPosts`), orderBy('createdAt', 'asc'));
+            const q = query(collection(db, `posts/${auth.currentUser.uid}/userPosts`), orderBy('createdAt', 'desc'));
             const querySnapshot = await getDocs(q)
             
             let posts = querySnapshot.docs.map(doc => {
@@ -35,7 +35,6 @@ export function fetchUserPosts() {
                 const id = doc.id;
                 return { id, ...data }
             })
-            console.log(posts);
             dispatch({
                 type: USER_POSTS_STATE_CHANGE,
                 posts
