@@ -10,6 +10,7 @@ import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navig
 import FeedScreen from './main/Feed'
 import ProfileScreen from './main/Profile'
 import SearchScreen from './main/Search'
+import { auth } from '../firebaseConfig'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -51,12 +52,20 @@ export class Main extends Component {
                         )
                     }} 
                 />
-                <Tab.Screen name="Profile" component={ProfileScreen} options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name='account-circle' color={color} size={26}/>
-                    )
-                }} />
+                <Tab.Screen name="Profile" component={ProfileScreen} 
+                    options={{
+                        headerShown: false,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name='account-circle' color={color} size={26}/>
+                        )
+                    }}
+                    listeners={({ navigation }) => ({
+                        tabPress: event => {
+                            event.preventDefault();
+                            navigation.navigate("Profile", {uid: auth.currentUser.uid})
+                        }
+                    })}
+                />
             </Tab.Navigator>
         )
     }
