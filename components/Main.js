@@ -31,7 +31,7 @@ export class Main extends Component {
                         <MaterialCommunityIcons name='home' color={color} size={26}/>
                     )
                 }} />
-                 <Tab.Screen name="Search" component={SearchScreen} options={{
+                 <Tab.Screen name="Search" component={SearchScreen} navigation={this.props.navigation} options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name='magnify' color={color} size={26}/>
