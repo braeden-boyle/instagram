@@ -46,7 +46,13 @@ function Profile(props) {
             console.error('Error fetching posts: ', error);
         }
     }
-  }, [props.route.params.uid]);
+
+    if (props.following.indexOf(props.route.params.uid) > -1 ) {
+      setFollowing(true);
+    } else {
+      setFollowing(false);
+    }
+  }, [props.route.params.uid, props.following]);
 
   const onFollow = async () => {
     await setDoc(doc(db, `following/${auth.currentUser.uid}/userFollowing/${props.route.params.uid}`), {}); 
@@ -124,7 +130,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
-  posts: store.userState.posts
+  posts: store.userState.posts,
+  following: store.userState.following
 })
 
 export default connect(mapStateToProps, null)(Profile);

@@ -1,6 +1,6 @@
-import { getDoc, doc, collection, query, orderBy, getDocs } from "firebase/firestore";
+import { getDoc, doc, collection, query, orderBy, getDocs, onSnapshot } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig";
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE } from "../constants";
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE } from "../constants";
 
 export function fetchUser() {
     return async (dispatch) => {
@@ -41,6 +41,27 @@ export function fetchUserPosts() {
             });
         } catch (error) {
             console.error('Error fetching posts: ', error);
+        }
+    };
+}
+
+export function fetchUserFollowing() {
+    return (dispatch) => {
+        try {
+            const ref = collection(db, `following/${auth.currentUser.uid}/userFollowing`)
+            onSnapshot(ref, (snapshot) => {
+                let following = snapshot.docs.map(doc => {
+                    const id = doc.id;
+                    return id;
+                });
+
+                dispatch({
+                    type: USER_FOLLOWING_STATE_CHANGE,
+                    following
+                });
+            })
+        } catch (error) {
+            console.error('Error fetching following: ', error);
         }
     };
 }
