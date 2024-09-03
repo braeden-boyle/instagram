@@ -27,7 +27,6 @@ export default function Save(props, { navigation }) {
         const storage = getStorage(firebaseApp);
 
         const childPath = `post/${auth.currentUser.uid}/${Math.random().toString(36)}`;
-        console.log(childPath);
         const storageRef = ref(storage, childPath);
 
         const uploadTask = uploadBytesResumable(storageRef, blob)

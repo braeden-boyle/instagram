@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import { auth, db } from '../../firebaseConfig';
 import { connect } from 'react-redux';
-import { doc, getDoc, query, collection, getDocs, orderBy } from 'firebase/firestore';
+import { doc, getDoc, query, collection, getDocs, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
+import { Button } from 'react-native';
 
 function Profile(props) {
   const [userPosts, setUserPosts] = useState([]);
   const [user, setUser] = useState(null);
+  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     const { currentUser, posts } = props;
@@ -46,6 +48,14 @@ function Profile(props) {
     }
   }, [props.route.params.uid]);
 
+  const onFollow = async () => {
+    await setDoc(doc(db, `following/${auth.currentUser.uid}/userFollowing/${props.route.params.uid}`), {}); 
+  }
+
+  const onUnfollow = async () => {
+    await deleteDoc(doc(db, `following/${auth.currentUser.uid}/userFollowing/${props.route.params.uid}`)); 
+  }
+
   if (user == null) {
     return <View/>
   }
@@ -54,6 +64,23 @@ function Profile(props) {
       <View style={styles.containerInfo}>
         <Text>{user.name}</Text>
         <Text>{user.email}</Text>
+
+        {props.route.params.uid != auth.currentUser.uid ? (
+          <View>
+            {following ? (
+              <Button
+                title='Following'
+                onPress={() => onUnfollow()}
+              />
+            ) : 
+            (
+              <Button
+                title='Follow'
+                onPress={() => onFollow()}
+              />
+            )}
+          </View>
+        ) : null }
       </View>
 
       <View style={styles.containerGallery}>
