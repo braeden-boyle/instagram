@@ -31,17 +31,15 @@ function Profile(props) {
         try {
           const q = query(collection(db, `posts/${props.route.params.uid}/userPosts`), orderBy('createdAt', 'desc'));
           getDocs(q).then((snapshot) => {
-            let userPosts = [];
             if (!snapshot.empty) {
-              userPosts = querySnapshot.docs.map(doc => {
+              let posts = snapshot.docs.map(doc => {
                 const data = doc.data();
                 const id = doc.id;
                 return { id, ...data }
               });
+              setUserPosts(posts);
             }
           })
-          
-          setUserPosts(userPosts);
         } catch (error) {
             console.error('Error fetching posts: ', error);
         }

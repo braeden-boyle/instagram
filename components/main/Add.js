@@ -14,15 +14,15 @@ export default function Add({ navigation }) {
     return <View />;
   }
 
-  if (!permission.granted) {
-    // Camera permissions are not granted yet
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
-  }
+  // if (!permission.granted) {
+  //   // Camera permissions are not granted yet
+  //   return (
+  //     <View style={styles.container}>
+  //       <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+  //       <Button onPress={requestPermission} title="grant permission" />
+  //     </View>
+  //   );
+  // }
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
