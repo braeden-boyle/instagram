@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native';
 import { auth, db } from '../../firebaseConfig';
 import { connect } from 'react-redux';
 import { doc, getDoc, query, collection, getDocs, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
-import { Button } from 'react-native';
 
 function Profile(props) {
   const [userPosts, setUserPosts] = useState([]);
@@ -76,6 +75,7 @@ function Profile(props) {
             {following ? (
               <Button
                 title='Following'
+                color={'#c7c7c7'}
                 onPress={() => onUnfollow()}
               />
             ) : 
