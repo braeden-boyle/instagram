@@ -1,6 +1,6 @@
 import { getDoc, doc, collection, query, orderBy, getDocs, onSnapshot } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig";
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE } from "../constants";
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_POSTS_STATE_CHANGE } from "../constants";
 
 export function fetchUser() {
     return async (dispatch) => {
@@ -59,7 +59,10 @@ export function fetchUserFollowing() {
                     type: USER_FOLLOWING_STATE_CHANGE,
                     following
                 });
-            })
+                for (let i = 0; i < following.length; i++) {
+                    dispatch(fetchUsersData(following[i]));
+                }
+            });
         } catch (error) {
             console.error('Error fetching following: ', error);
         }
@@ -81,6 +84,7 @@ export function fetchUsersData(uid) {
                         type: USERS_DATA_STATE_CHANGE,
                         user
                     });
+                    dispatch(fetchUsersFollowingPosts(user.uid));
                 } else {
                     console.log('No such document');
                     console.log('User ID: ' + auth.currentUser.uid)
@@ -89,4 +93,30 @@ export function fetchUsersData(uid) {
             }); 
         }
     })
+}
+
+export function fetchUsersFollowingPosts(uid) {
+    return (dispatch, getState) => {
+        try {
+            const q = query(collection(db, `posts/${uid}/userPosts`), orderBy('createdAt', 'desc'));
+             getDocs(q).then((snapshot) => {
+                const uid = snapshot.query.EP.path.segments[1];
+                const user = getState().usersState.users.find(el => el.uid === uid);
+
+                let posts = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    return { id, ...data, user }
+                });
+
+                dispatch({
+                    type: USERS_POSTS_STATE_CHANGE,
+                    posts,
+                    uid
+                });
+             })
+        } catch (error) {
+            console.error('Error fetching users posts: ', error);
+        }
+    };
 }
