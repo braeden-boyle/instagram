@@ -1,6 +1,6 @@
 import { getDoc, doc, collection, query, orderBy, getDocs, onSnapshot } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig";
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE } from "../constants";
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE } from "../constants";
 
 export function fetchUser() {
     return async (dispatch) => {
@@ -64,4 +64,29 @@ export function fetchUserFollowing() {
             console.error('Error fetching following: ', error);
         }
     };
+}
+
+export function fetchUsersData(uid) {
+    return ((dispatch, getState) => {
+        const found = getState().usersState.users.some(el => el.uid === uid);
+
+        if (!found) {
+            const docRef = doc(db, "users", uid);
+            getDoc(docRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    let user = snapshot.data();
+                    user.uid = snapshot.id;
+
+                    dispatch({
+                        type: USERS_DATA_STATE_CHANGE,
+                        user
+                    });
+                } else {
+                    console.log('No such document');
+                    console.log('User ID: ' + auth.currentUser.uid)
+                    console.log('User email: ' + auth.currentUser.email)
+                }
+            }); 
+        }
+    })
 }
