@@ -12,10 +12,10 @@ export default class Login extends Component {
             password: '',
         }
 
-        this.onSignUp = this.onSignUp.bind(this)
+        this.onSignIn = this.onSignIn.bind(this)
     }
 
-onSignUp(){
+onSignIn(){
     const { email, password } = this.state;
     signInWithEmailAndPassword(auth, email, password)
     .then((result) => {
@@ -30,10 +30,6 @@ onSignUp(){
         return (
             <View>
                 <TextInput
-                    placeholder="name"
-                    onChangeText={(name) => this.setState({ name })}
-                />
-                <TextInput
                     placeholder="email"
                     onChangeText={(email) => this.setState({ email })}
                 />
@@ -44,7 +40,7 @@ onSignUp(){
                 />
 
                 <Button
-                    onPress={() => this.onSignUp()}
+                    onPress={() => this.onSignIn()}
                     title="Sign In"
                 />
             </View>
