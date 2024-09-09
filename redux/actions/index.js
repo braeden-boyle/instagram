@@ -100,7 +100,7 @@ export function fetchUsersFollowingPosts(uid) {
         try {
             const q = query(collection(db, `posts/${uid}/userPosts`), orderBy('createdAt', 'desc'));
              getDocs(q).then((snapshot) => {
-                const uid = snapshot.query.EP.path.segments[1];
+                const uid = snapshot.docs[0].ref.path.split('/')[1];
                 const user = getState().usersState.users.find(el => el.uid === uid);
 
                 let posts = snapshot.docs.map(doc => {
