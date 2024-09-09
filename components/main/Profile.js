@@ -61,6 +61,10 @@ function Profile(props) {
     await deleteDoc(doc(db, `following/${auth.currentUser.uid}/userFollowing/${props.route.params.uid}`)); 
   }
 
+  const onLogout = () => {
+    auth.signOut();
+  }
+
   if (user == null) {
     return <View/>
   }
@@ -86,7 +90,12 @@ function Profile(props) {
               />
             )}
           </View>
-        ) : null }
+        ) : 
+          <Button
+            title='Logout'
+            onPress={() => onLogout()}
+          /> 
+      }
       </View>
 
       <View style={styles.containerGallery}>
