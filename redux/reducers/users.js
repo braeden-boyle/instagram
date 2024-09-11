@@ -22,7 +22,8 @@ export const users = (state = initialState, action) => {
             }
         case CLEAR_DATA:
             return {
-                initialState
+                users: [],
+                usersLoaded: 0
             }
         default:
             return state;
