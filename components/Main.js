@@ -3,7 +3,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { fetchUser, fetchUserPosts, fetchUserFollowing } from '../redux/actions'
+import { fetchUser, fetchUserPosts, fetchUserFollowing, clearData } from '../redux/actions'
 
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 
@@ -20,6 +20,7 @@ const EmptyScreen = () => {
 
 export class Main extends Component {
     componentDidMount() {
+        this.props.clearData();
         this.props.fetchUser();
         this.props.fetchUserPosts();
         this.props.fetchUserFollowing();
@@ -75,6 +76,6 @@ export class Main extends Component {
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({ fetchUser, fetchUserPosts, fetchUserFollowing }, dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({ fetchUser, fetchUserPosts, fetchUserFollowing, clearData }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
