@@ -66,7 +66,7 @@ export function fetchUserFollowing() {
                     following
                 });
                 for (let i = 0; i < following.length; i++) {
-                    dispatch(fetchUsersData(following[i]));
+                    dispatch(fetchUsersData(following[i], true));
                 }
             });
         } catch (error) {
@@ -75,7 +75,7 @@ export function fetchUserFollowing() {
     };
 }
 
-export function fetchUsersData(uid) {
+export function fetchUsersData(uid, getPosts) {
     return ((dispatch, getState) => {
         const found = getState().usersState.users.some(el => el.uid === uid);
 
@@ -90,13 +90,15 @@ export function fetchUsersData(uid) {
                         type: USERS_DATA_STATE_CHANGE,
                         user
                     });
-                    dispatch(fetchUsersFollowingPosts(user.uid));
                 } else {
                     console.log('No such document');
                     console.log('User ID: ' + auth.currentUser.uid)
                     console.log('User email: ' + auth.currentUser.email)
                 }
-            }); 
+            });
+            if (getPosts) {
+                dispatch(fetchUsersFollowingPosts(uid));
+            }
         }
     })
 }

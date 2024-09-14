@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native';
-import { auth, db } from '../../firebaseConfig';
 import { connect } from 'react-redux';
-import { doc, getDoc, query, collection, getDocs, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
 
 function Feed(props) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     let posts = [];
-    if (props.usersLoaded == props.following.length) {
+    if (props.usersFollowingLoaded == props.following.length) {
       for (let i = 0; i < props.following.length; i++) {
         const user = props.users.find(el => el.uid === props.following[i]);
         if (user != undefined) {
@@ -23,7 +21,7 @@ function Feed(props) {
 
       setPosts(posts);
     }
-  }, [props.usersLoaded]);
+  }, [props.usersFollowingLoaded]);
 
   return (
     <View style={styles.container}>
@@ -35,7 +33,7 @@ function Feed(props) {
           renderItem={({item}) => (
             <View
               style={styles.containerImage}>
-              <Text style={styles.container}>{item.user.name}</Text>
+              <Text style={styles.usernameHeader}>{item.user.name}</Text>
               <Image
                 style={styles.image}
                 source={{uri: item.downloadURL}}
@@ -68,7 +66,13 @@ const styles = StyleSheet.create({
     aspectRatio: 1/1
   },
   containerImage: {
-    flex: 0.8
+    flex: 0.9
+  },
+  usernameHeader: {
+    fontWeight: 'bold', 
+    height: 50,
+    alignContent: 'center',
+    paddingLeft: 10
   }
 })
 
@@ -76,7 +80,7 @@ const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
   following: store.userState.following,
   users: store.usersState.users,
-  usersLoaded: store.usersState.usersLoaded
+  usersFollowingLoaded: store.usersState.usersFollowingLoaded
 })
 
 export default connect(mapStateToProps, null)(Feed);
