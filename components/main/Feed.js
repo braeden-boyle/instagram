@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1/1
   },
   containerImage: {
-    flex: 1/3
+    flex: 0.8
   }
 })
 
