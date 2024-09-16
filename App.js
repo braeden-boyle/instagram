@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-
 import { View, Text } from 'react-native'
-
 import { getApps, initializeApp } from 'firebase/app';
-import { auth, firebaseApp, firebaseConfig } from './firebaseConfig';
-
+import { auth, firebaseConfig } from './firebaseConfig';
 import { Provider } from 'react-redux';
 import rootReducer from './redux/reducers'
 import { thunk } from 'redux-thunk';
