@@ -1,6 +1,6 @@
 import { getDoc, doc, collection, query, orderBy, getDocs, onSnapshot } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig";
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_POSTS_STATE_CHANGE, CLEAR_DATA } from "../constants";
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_POSTS_STATE_CHANGE, CLEAR_DATA, USERS_LIKES_STATE_CHANGE } from "../constants";
 
 export function clearData() {
     return ((dispatch) => {
@@ -117,6 +117,10 @@ export function fetchUsersFollowingPosts(uid) {
                     return { id, ...data, user }
                 });
 
+                for (let i = 0; i < posts.length; i++) {
+                    dispatch(fetchUsersFollowingLikes(uid, posts[i].id));
+                }
+
                 dispatch({
                     type: USERS_POSTS_STATE_CHANGE,
                     posts,
@@ -124,7 +128,28 @@ export function fetchUsersFollowingPosts(uid) {
                 });
              })
         } catch (error) {
-            console.error('Error fetching users posts: ', error);
+            console.error('Error fetching users following posts: ', error);
+        }
+    };
+}
+
+
+export function fetchUsersFollowingLikes(uid, postId) {
+    return (dispatch) => {
+        try {
+            onSnapshot(
+                doc(db, `posts/${uid}/userPosts/${postId}/likes/${auth.currentUser.uid}`), (doc, snapshot) => {
+                    const postId = snapshot.ZE.path.segments[3];
+
+                    let currentUserLike = false;
+                    if (snapshot.exists) {
+                        currentUserLike = true;
+                    }
+
+                    dispatch({ type: USERS_LIKES_STATE_CHANGE, postId, currentUserLike})
+                })
+        } catch (error) {
+            console.error('Error fetching users following likes: ', error);
         }
     };
 }
