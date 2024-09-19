@@ -1,6 +1,9 @@
+import { doc, deleteDoc, setDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import { Button } from 'react-native-web';
 import { connect } from 'react-redux';
+import { db, auth } from '../../firebaseConfig';
 
 function Feed(props) {
   const [posts, setPosts] = useState([]);
@@ -13,6 +16,16 @@ function Feed(props) {
       setPosts(props.feed);
     }
   }, [props.usersFollowingLoaded, props.feed]);
+
+  const onLikePress = async (userId, postId) => {
+    await setDoc(
+      doc(db, `posts/${userId}/userPosts/${postId}/likes/${auth.currentUser.uid}`),
+      {});
+  }
+
+  const onDislikePress = async (userId, postId) => {
+    await deleteDoc(doc(db, `posts/${userId}/userPosts/${postId}/likes/${auth.currentUser.uid}`));
+  }
 
   return (
     <View style={styles.container}>
@@ -29,6 +42,19 @@ function Feed(props) {
                 style={styles.image}
                 source={{uri: item.downloadURL}}
               />
+              { item.currentUserLike ? 
+                (
+                  <Button
+                    title='Dislike'
+                    onPress={() => onDislikePress(item.user.uid, item.id)}/>
+                )
+                :
+                (
+                  <Button
+                    title='Like'
+                    onPress={() => onLikePress(item.user.uid, item.id)}/>
+                )
+              }
               <Text
                 onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}
               >

@@ -138,8 +138,8 @@ export function fetchUsersFollowingLikes(uid, postId) {
     return (dispatch) => {
         try {
             onSnapshot(
-                doc(db, `posts/${uid}/userPosts/${postId}/likes/${auth.currentUser.uid}`), (doc, snapshot) => {
-                    const postId = snapshot.ZE.path.segments[3];
+                doc(db, `posts/${uid}/userPosts/${postId}/likes/${auth.currentUser.uid}`), (snapshot) => {
+                    const postId = snapshot.id;
 
                     let currentUserLike = false;
                     if (snapshot.exists) {
