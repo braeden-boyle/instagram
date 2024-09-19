@@ -10,7 +10,7 @@ import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navig
 import FeedScreen from './main/Feed'
 import ProfileScreen from './main/Profile'
 import SearchScreen from './main/Search'
-import { auth } from '../../firebaseConfig'
+import { auth } from '../firebaseConfig'
 
 const Tab = createMaterialBottomTabNavigator();
 

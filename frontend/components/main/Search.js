@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native'
 
-import { db } from '../../../firebaseConfig'
+import { db } from '../../firebaseConfig'
 import { collection, query, where, getDocs } from 'firebase/firestore'
 
 
