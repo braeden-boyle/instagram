@@ -1,5 +1,5 @@
 import { getDoc, doc, collection, query, orderBy, getDocs, onSnapshot } from "firebase/firestore";
-import { db, auth } from "../../firebaseConfig";
+import { db, auth } from "../../../firebaseConfig";
 import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_POSTS_STATE_CHANGE, CLEAR_DATA, USERS_LIKES_STATE_CHANGE } from "../constants";
 
 export function clearData() {
@@ -142,7 +142,7 @@ export function fetchUsersFollowingLikes(uid, postId) {
                     const postId = snapshot.id;
 
                     let currentUserLike = false;
-                    if (snapshot.exists) {
+                    if (snapshot.exists()) {
                         currentUserLike = true;
                     }
 

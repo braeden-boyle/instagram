@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native';
-import { auth, db } from '../../firebaseConfig';
+import { auth, db } from '../../../firebaseConfig';
 import { connect } from 'react-redux';
 import { doc, getDoc, query, collection, getDocs, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
 

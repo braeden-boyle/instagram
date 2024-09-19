@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import { Button } from 'react-native-web';
 import { connect } from 'react-redux';
-import { db, auth } from '../../firebaseConfig';
+import { db, auth } from '../../../firebaseConfig';
 
 function Feed(props) {
   const [posts, setPosts] = useState([]);
